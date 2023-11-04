@@ -29,7 +29,6 @@ public class SimpleArticleService implements ArticleService {
                 .mapToObj((x) -> articleGenerator.generate(words))
                 .collect(Collectors.toList());
         articles.forEach(articleStore::save);  */
-
         for (int i = 0; i < count; i++) {
             LOGGER.info("Сгенерирована статья № {}", i);
             articleStore.save(articleGenerator.generate(words));
