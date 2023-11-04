@@ -12,9 +12,9 @@ import java.util.Properties;
 
 public class Application {
 
-    private final Logger lOGGER = LoggerFactory.getLogger(Application.class.getSimpleName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getSimpleName());
 
-    public final int tARGETcOUNT = 1_000_000;
+    public static final int TARGET_COUNT = 1_000_000;
 
     public static void main(String[] args) {
         Application app = new Application();
@@ -26,16 +26,16 @@ public class Application {
         var articleService = new SimpleArticleService(articleGenerator);
 
 
-        articleService.generate(wordStore, app.tARGETcOUNT, articleStore);
+        articleService.generate(wordStore, TARGET_COUNT, articleStore);
     }
 
     private Properties loadProperties() {
-        lOGGER.info("Загрузка настроек приложения");
+        LOGGER.info("Загрузка настроек приложения");
         var properties = new Properties();
         try (InputStream in = Application.class.getClassLoader().getResourceAsStream("application.properties")) {
             properties.load(in);
         } catch (Exception e) {
-            lOGGER.error("Не удалось загрузить настройки. { }", e.getCause());
+            LOGGER.error("Не удалось загрузить настройки. { }", e.getCause());
             throw new IllegalStateException();
         }
         return properties;
