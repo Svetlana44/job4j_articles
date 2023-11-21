@@ -1,4 +1,4 @@
-package ru.job4j.ood.ocp.firstexemple;
+package ru.job4j.ood.ocp.thirdexample;
 
 import java.io.File;
 
