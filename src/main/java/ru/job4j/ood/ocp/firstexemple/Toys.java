@@ -1,4 +1,4 @@
-package ru.job4j.ood.ocp;
+package ru.job4j.ood.ocp.firstexemple;
 
 /* При наследовании наследуется состояние объекта предка
 * тут лучше интерфейс Playable */
