@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReportXMLTest extends Cinema3D {
 
     Calendar now = Calendar.getInstance();
-    // Устанавливаем нужный формат времени
+    /* Устанавливаем нужный формат времени  */
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
     String calendar = sdf.format(now.getTime());
 
