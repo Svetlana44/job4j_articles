@@ -2,21 +2,24 @@ package ru.job4j.ood.srp.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
-@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
+
 public class Employee {
-    @XmlElement
+
     private String name;
-    @XmlElement
+/*    @XmlJavaTypeAdapter(EmployeeAdapter.class) /* чтобы использовался свой адаптер для сериализации/десериализации */
     private Calendar hired;
-    @XmlElement
+/*    @XmlJavaTypeAdapter(EmployeeAdapter.class) /* чтобы использовался свой адаптер для сериализации/десериализации */
     private Calendar fired;
-    @XmlElement
+
     private double salary;
 
     public Employee() {
@@ -62,7 +65,7 @@ public class Employee {
     }
 
     @Override
-    public Employee clone() throws CloneNotSupportedException {
+    public Employee clone() {
         Employee employeeClone = this.clone();
         Calendar hiredClone = (Calendar) this.hired.clone();
         employeeClone.setHired(hiredClone);
@@ -87,4 +90,28 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    /* Для изменения сериализации для класса Employee,
+     необходимо создать класс-адаптер или использовать аннотации для указания специфических правил сериализации.
+     Затем необходимо зарегистрировать адаптер или аннотации в контексте JAXB перед выполнением маршалинга в методе generate:
+     JAXBContext jaxbContext = JAXBContext.newInstance(Employee.class, EmployeeAdapter.class); */
+    /* не используется из-за непонятной ошибки
+    public class EmployeeAdapter extends XmlAdapter<String, Calendar> {
+        @Override
+        public Calendar unmarshal(String empl) throws Exception {
+            return Calendar.getInstance();
+        }
+
+        @Override
+        public String marshal(Calendar calendar) throws Exception {
+          /*  ReportDateTimeParser parserDate = new ReportDateTimeParser();
+            String hired = parserDate.parse(employee.getHired());
+            String fired = parserDate.parse(employee.getFired());  */
+            /* Устанавливаем нужный формат времени
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            String rsl = sdf.format(calendar.getTime());
+
+            return rsl;
+        }
+    }*/
 }

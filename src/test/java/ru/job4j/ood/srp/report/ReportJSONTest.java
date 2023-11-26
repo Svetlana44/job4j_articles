@@ -1,6 +1,5 @@
 package ru.job4j.ood.srp.report;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.formatter.ReportDateTimeParser;
@@ -15,19 +14,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ReportJSONTest extends Cinema3D {
 
+    ReportDateTimeParser parser = new ReportDateTimeParser();
+
     Calendar now = Calendar.getInstance();
-    Gson gson = new Gson();
-    String calendar = gson.toJson(now);
+    String calendar = parser.parse(now);
 
 
     @Test
     void calendarToJson() {
-        String expected = "{\"year\":" + now.get(Calendar.YEAR)
-                + ",\"month\":" + now.get(Calendar.MONTH)
-                + ",\"dayOfMonth\":" + now.get(Calendar.DAY_OF_MONTH)
-                + ",\"hourOfDay\":" + now.get(Calendar.HOUR_OF_DAY)
-                + ",\"minute\":" + now.get(Calendar.MINUTE)
-                + ",\"second\":" + now.get(Calendar.SECOND) + "}";
+        String expected = now.get(Calendar.DAY_OF_MONTH)
+                + ":" + (now.get(Calendar.MONTH) + 1)
+                + ":" + now.get(Calendar.YEAR)
+                + " " + now.get(Calendar.HOUR_OF_DAY)
+                + ":" + String.format("%02d", now.get(Calendar.MINUTE));  /* String.format("%02d"  */
         assertThat(expected).isEqualTo(calendar);
     }
 
@@ -42,10 +41,10 @@ class ReportJSONTest extends Cinema3D {
                 .append("[{")
                 .append("\"name\":\"")
                 .append(worker.getName()).append("\",")
-                .append("\"hired\":")
-                .append(calendar).append(",")
-                .append("\"fired\":")
-                .append(calendar).append(",")
+                .append("\"hired\":\"")
+                .append(calendar).append("\",")
+                .append("\"fired\":\"")
+                .append(calendar).append("\",")
                 .append("\"salary\":")
                 .append(worker.getSalary())
                 .append("}]");

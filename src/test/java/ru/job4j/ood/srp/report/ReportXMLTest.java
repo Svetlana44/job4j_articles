@@ -8,7 +8,6 @@ import ru.job4j.ood.srp.store.MemStore;
 import ru.job4j.ood.tdd.Cinema3D;
 
 import javax.xml.bind.JAXBException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,17 +15,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReportXMLTest extends Cinema3D {
 
     Calendar now = Calendar.getInstance();
-    /* Устанавливаем нужный формат времени  */
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    String calendar = sdf.format(now.getTime());
+    /* Устанавливаем нужный формат времени
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    String calendar = sdf.format(now.getTime()); */
+    DateTimeParser<Calendar> parser = new ReportDateTimeParser();
+    String calendar = parser.parse(now);
 
     @Test
     void generate() throws JAXBException {
-
-
         MemStore store = new MemStore();
         Employee worker = new Employee("Ivan", now, now, 100);
-        DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         Report engine = new ReportXML(store, parser);
         String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"

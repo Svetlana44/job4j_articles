@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
+import ru.job4j.ood.srp.model.WrapEmployee;
 import ru.job4j.ood.srp.store.Store;
 
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public class ReportJSON implements Report {
         for (Employee employee : store.findBy(filter)) {
             /* Преобразуем объект person в json-строку. */
             final Gson gson = new GsonBuilder().create();
-            text.append(gson.toJson(employee));
+            text.append(gson.toJson(new WrapEmployee(employee)));
             text.append(",");
         }
         text.deleteCharAt(text.length() - 1);
