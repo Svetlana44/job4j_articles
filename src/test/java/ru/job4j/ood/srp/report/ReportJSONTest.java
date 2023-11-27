@@ -19,7 +19,6 @@ class ReportJSONTest extends Cinema3D {
     Calendar now = Calendar.getInstance();
     String calendar = parser.parse(now);
 
-
     @Test
     void calendarToJson() {
         String expected = now.get(Calendar.DAY_OF_MONTH)
@@ -32,10 +31,16 @@ class ReportJSONTest extends Cinema3D {
 
     @Test
     void generate() throws JAXBException {
+        Calendar now2 = (Calendar) now.clone();
+        now2.add(Calendar.MINUTE, 1);
+        String calendar2 = parser.parse(now2);
+
         MemStore store = new MemStore();
         Employee worker = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Ivan2", now2, now2, 100);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
+        store.add(worker2);
         Report engine = new ReportJSON(store, parser);
         StringBuilder expect = new StringBuilder()
                 .append("[{")
@@ -47,7 +52,18 @@ class ReportJSONTest extends Cinema3D {
                 .append(calendar).append("\",")
                 .append("\"salary\":")
                 .append(worker.getSalary())
-                .append("}]");
+                .append("},")
+                .append("{")
+                .append("\"name\":\"")
+                .append(worker2.getName()).append("\",")
+                .append("\"hired\":\"")
+                .append(calendar2).append("\",")
+                .append("\"fired\":\"")
+                .append(calendar2).append("\",")
+                .append("\"salary\":")
+                .append(worker2.getSalary())
+                .append("}")
+                .append("]");
         assertThat(engine.generate(em -> true)).isEqualTo(expect.toString());
     }
 }

@@ -23,15 +23,28 @@ class ReportXMLTest extends Cinema3D {
 
     @Test
     void generate() throws JAXBException {
+        Calendar now2 = (Calendar) now.clone();
+        now2.add(Calendar.MINUTE, 1);
+        String calendar2 = parser.parse(now2);
+
+
         MemStore store = new MemStore();
         Employee worker = new Employee("Ivan", now, now, 100);
+        Employee worker2 = new Employee("Ivan2", now2, now2, 100);
         store.add(worker);
+        store.add(worker2);
         Report engine = new ReportXML(store, parser);
         String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
                 + "<employee>\n"
                 + "    <name>Ivan</name>\n"
                 + "    <hired>" + calendar + "</hired>\n"
                 + "    <fired>" + calendar + "</fired>\n"
+                + "    <salary>100.0</salary>\n"
+                + "</employee>\n"
+                + "<employee>\n"
+                + "    <name>Ivan2</name>\n"
+                + "    <hired>" + calendar2 + "</hired>\n"
+                + "    <fired>" + calendar2 + "</fired>\n"
                 + "    <salary>100.0</salary>\n"
                 + "</employee>";
         assertThat(engine.generate(em -> true)).isEqualTo(expected);

@@ -30,6 +30,7 @@ public class ReportXML implements Report {
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
         StringBuilder text = new StringBuilder();
+        text.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
 /*   создают новый объект StringWriter, и затем используют marshaller для маршалинга (преобразования в строку) объекта employee
  и записи этой строки в объект StringWriter
   WrapEmployee это обёртка класса для перевода полей hired,fired в форматированный String
@@ -37,7 +38,7 @@ public class ReportXML implements Report {
         for (Employee employee : store.findBy(filter)) {
             try (StringWriter writer = new StringWriter()) {
                 marshaller.marshal(new WrapEmployee(employee), writer);
-                text.append(writer.getBuffer());
+                text.append(writer.getBuffer().substring(56));
             } catch (IOException e) {
                 e.printStackTrace();
             }
