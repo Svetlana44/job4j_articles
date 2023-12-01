@@ -21,10 +21,10 @@ class ReportJSONTest extends Cinema3D {
 
     @Test
     void calendarToJson() {
-        String expected = now.get(Calendar.DAY_OF_MONTH)
-                + ":" + (now.get(Calendar.MONTH) + 1)
+        String expected = String.format("%02d", now.get(Calendar.DAY_OF_MONTH))  /* форматирует что две цифры, если одна, то добавляет ведущий ноль */
+                + ":" + String.format("%02d", (now.get(Calendar.MONTH) + 1))
                 + ":" + now.get(Calendar.YEAR)
-                + " " + now.get(Calendar.HOUR_OF_DAY)
+                + " " + String.format("%02d", now.get(Calendar.HOUR_OF_DAY))
                 + ":" + String.format("%02d", now.get(Calendar.MINUTE));  /* String.format("%02d"  */
         assertThat(expected).isEqualTo(calendar);
     }
