@@ -7,31 +7,38 @@ import ru.job4j.ood.lsp.storeproduct.food.Food;
 import ru.job4j.ood.tdd.Cinema3D;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class WarehouseTest extends Cinema3D {
     @Spy
-    AbstractStore warehouse = new Warehouse();
+    Store warehouse = new Warehouse();
 
     LocalDateTime now = LocalDateTime.now().withNano(0);  /* без милисекунд */
     Food apple = new Apple("greenApple", now.plusDays(10), now.minusDays(3), 30.00, 0);
     Food milk = new Apple("freshMilk", now.plusDays(1), now.minusDays(10), 33.00, 3);
+    Food badmilk = new Apple("notFreshMilk", now.minusDays(1), now.minusDays(3), 200.00, 3);
+    List<Food> foods = List.of(apple, milk, badmilk);
 
     @Test
     void checkAddFood() {
-        warehouse.addFood(apple);
-        warehouse.addFood(milk);
-        List<Food> actual = warehouse.foods;
-        List<Food> expected = List.of(apple, milk);
+        for (Food food : foods) {
+            long totalDays = ChronoUnit.DAYS.between(food.createDate, food.expiryDate);
+            long expiredDays = ChronoUnit.DAYS.between(food.createDate, now);
+            double percentageExpired = ((double) expiredDays / (double) totalDays) * 100;
+            warehouse.addFood(food, percentageExpired);
+        }
+        List<Food> actual = warehouse.getFoods();
+        List<Food> expected = List.of(apple);
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void checkGetFoods() {
-        List<Food> expected = List.of(apple, milk);
-        warehouse.foods = expected;
+        List<Food> expected = List.of(apple, milk, badmilk);
+        Store warehouse = new Warehouse(foods);
         List<Food> actual = warehouse.getFoods();
         assertThat(actual).isEqualTo(expected);
     }
