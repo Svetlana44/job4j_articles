@@ -8,7 +8,6 @@ import ru.job4j.ood.tdd.Cinema3D;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,28 +18,26 @@ class ControlQualityTest extends Cinema3D {
     Food milk = new Apple("freshMilk", now.plusDays(1), now.minusDays(10), 200.00, 3);
     Food badmilk = new Apple("notFreshMilk", now.minusDays(1), now.minusDays(3), 200.00, 3);
 
-    /*
-            Store shop = new Shop();
-            Store trash = new Trash();
-            Store warehouse = new Warehouse();
 
-    */
-//    @Test
-//    void checkMain() {
-//        String expected = ("На складе:" + System.lineSeparator()
-//                + "[Food{name='greenApple', expiryDate=" + now.plusDays(10).withNano(0) + ", createDate=" + now.minusDays(3).withNano(0) + ", price=100.0, discoun=0}]" + System.lineSeparator()
-//                + "В магазине:" + System.lineSeparator()
-//                + "[Food{name='freshMilk', expiryDate=" + now.plusDays(1).withNano(0) + ", createDate=" + now.minusDays(10).withNano(0) + ", price=160.0, discoun=3}]" + System.lineSeparator()
-//                + "Помойка:" + System.lineSeparator()
-//                + "[Food{name='notFreshMilk', expiryDate=" + now.minusDays(1).withNano(0) + ", createDate=" + now.minusDays(3).withNano(0) + ", price=200.0, discoun=3}]" + System.lineSeparator());
-//
-//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outputStream));
-//
-//        ControlQuality.main(null);
-//
-//        assertThat(expected).isEqualTo(outputStream.toString());
-//    }
+    @Test
+    void checkMain() {
+        String expected = "Shop: " + System.lineSeparator()
+                + "[Food{name='freshMilk', expiryDate=" + now.plusDays(1) + ", createDate=" + now.minusDays(10) + ", price=160.0, discoun=3}]" + System.lineSeparator()
+                + System.lineSeparator()
+                + "Trash: " + System.lineSeparator()
+                + "[Food{name='notFreshMilk', expiryDate=" + now.minusDays(1) + ", createDate=" + now.minusDays(3) + ", price=200.0, discoun=3}]" + System.lineSeparator()
+                + System.lineSeparator()
+                + "Warehouse" + System.lineSeparator()
+                + "[Food{name='greenApple', expiryDate=" + now.plusDays(10) + ", createDate=" + now.minusDays(3) + ", price=100.0, discoun=0}]" + System.lineSeparator()
+                + System.lineSeparator();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        ControlQuality.main(null);
+
+        assertThat(expected).isEqualTo(outputStream.toString());
+    }
 }
 /*
 controlQuality.now.plusDays(10), controlQuality.now.minusDays(3), 10
