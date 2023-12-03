@@ -3,10 +3,12 @@ package ru.job4j.ood.lsp.parking.store;
 import ru.job4j.ood.lsp.parking.model.Car;
 
 public class Parking extends Store {
-    int size;
+    int sizeMiniCar;
+    int sizeBigCar;
 
-    public Parking(int size) {
-        this.size = size;
+    public Parking(int sizeMiniCar, int sizeBigCar) {
+        this.sizeMiniCar = sizeMiniCar;
+        this.sizeBigCar = sizeBigCar;
     }
 
     @Override
