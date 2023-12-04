@@ -1,11 +1,9 @@
 package ru.job4j.ood.lsp.storeproduct.store;
 
-import ru.job4j.ood.lsp.storeproduct.food.Apple;
 import ru.job4j.ood.lsp.storeproduct.food.Food;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 /*  Класс ControlQuality во взаимодействии с хранилищами должен обеспечить распределение продуктов
@@ -15,13 +13,44 @@ import java.util.List;
      3.3. Если срок годности израсходован более, чем на 75%, то продукт должен оказаться в Shop и его цена должна быть снижена на размер скидки в 20 % от первоначальной цены.
      3.4. Если срок годности вышел (израсходован полностью) , продукт должен оказаться в Trash. */
 public class ControlQuality {
-    List<Store> stores;
+    public List<Store> stores;
 
     public ControlQuality(List<Store> stores) {
         this.stores = stores;
     }
 
-    public static void main(String[] args) {
+    public void isNotMain(List<Food> foods, List<Store> stores) {
+
+     /*   List<Store> stores = List.of(new Shop(), new Trash(), new Warehouse());
+
+        ControlQuality controlQuality = new ControlQuality(stores);  */
+
+        LocalDateTime now = LocalDateTime.now().withNano(0);  /* без милисекунд */
+
+   /*     Food apple = new Apple("greenApple", now.plusDays(10), now.minusDays(3), 100.00, 0);
+        Food milk = new Apple("freshMilk", now.plusDays(1), now.minusDays(10), 200.00, 3);
+        Food badmilk = new Apple("notFreshMilk", now.minusDays(1), now.minusDays(3), 200.00, 3);
+
+        List<Food> foods = List.of(apple, milk, badmilk);  */
+        for (Food food : foods) {
+            long totalDays = ChronoUnit.DAYS.between(food.createDate, food.expiryDate);
+            long expiredDays = ChronoUnit.DAYS.between(food.createDate, now);
+            double percentageExpired = ((double) expiredDays / (double) totalDays) * 100;
+
+            for (Store store : stores) {
+                if (store.addFood(food, percentageExpired)) {
+                    break;
+                }
+            }
+        }
+
+        for (Store store : stores) {
+            System.out.println(store.getFoods() + System.lineSeparator());
+        }
+    }
+
+
+ /*   public static void main(String[] args) {
 
         List<Store> stores = List.of(new Shop(), new Trash(), new Warehouse());
 
@@ -29,7 +58,7 @@ public class ControlQuality {
 
         LocalDateTime now = LocalDateTime.now().withNano(0);  /* без милисекунд */
 
-        Food apple = new Apple("greenApple", now.plusDays(10), now.minusDays(3), 100.00, 0);
+ /*       Food apple = new Apple("greenApple", now.plusDays(10), now.minusDays(3), 100.00, 0);
         Food milk = new Apple("freshMilk", now.plusDays(1), now.minusDays(10), 200.00, 3);
         Food badmilk = new Apple("notFreshMilk", now.minusDays(1), now.minusDays(3), 200.00, 3);
 
@@ -49,7 +78,7 @@ public class ControlQuality {
         for (Store store : stores) {
             System.out.println(store.getFoods() + System.lineSeparator());
         }
-    }
+    }   */
 }
 /*
         Store shop = new Shop();
