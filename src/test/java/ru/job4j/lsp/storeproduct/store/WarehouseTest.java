@@ -1,9 +1,12 @@
-package ru.job4j.ood.lsp.storeproduct.store;
+package ru.job4j.lsp.storeproduct.store;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
 import ru.job4j.ood.lsp.storeproduct.food.Apple;
 import ru.job4j.ood.lsp.storeproduct.food.Food;
+import ru.job4j.ood.lsp.storeproduct.store.Store;
+import ru.job4j.ood.lsp.storeproduct.store.Warehouse;
 import ru.job4j.ood.tdd.Cinema3D;
 
 import java.time.LocalDateTime;
@@ -32,7 +35,7 @@ class WarehouseTest extends Cinema3D {
         }
         List<Food> actual = warehouse.getFoods();
         List<Food> expected = List.of(apple);
-        assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -40,6 +43,6 @@ class WarehouseTest extends Cinema3D {
         List<Food> expected = List.of(apple, milk, badmilk);
         Store warehouse = new Warehouse(foods);
         List<Food> actual = warehouse.getFoods();
-        assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isEqualTo(expected);
     }
 }

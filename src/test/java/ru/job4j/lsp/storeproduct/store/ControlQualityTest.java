@@ -1,9 +1,11 @@
-package ru.job4j.ood.lsp.storeproduct.store;
+package ru.job4j.lsp.storeproduct.store;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
 import ru.job4j.ood.lsp.storeproduct.food.Apple;
 import ru.job4j.ood.lsp.storeproduct.food.Food;
+import ru.job4j.ood.lsp.storeproduct.store.*;
 import ru.job4j.ood.tdd.Cinema3D;
 
 import java.io.ByteArrayOutputStream;
@@ -44,7 +46,7 @@ class ControlQualityTest extends Cinema3D {
 
         controlQuality.isNotMain(foods, stores);
 
-        assertThat(expected).isEqualTo(outputStream.toString());
+        Assertions.assertThat(expected).isEqualTo(outputStream.toString());
     }
 }
 /*
