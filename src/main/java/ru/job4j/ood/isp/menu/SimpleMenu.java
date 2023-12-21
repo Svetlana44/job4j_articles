@@ -5,9 +5,17 @@ import java.util.*;
 public class SimpleMenu implements Menu {
     private final List<MenuItem> rootElements = new ArrayList<>();
 
+    /*  Если parentName равен null, то childName добавляете в rootElements и он становится корневым элементом.
+     Если parentName не равен null,
+     то проверить, что parentName существует и добавить ему в потомки childName  */
     @Override
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
-  /*private static class SimpleMenuItem implements MenuItem {
+        if (parentName == null) {
+            actionDelegate.delegate();
+            return rootElements.add(new SimpleMenuItem(childName, actionDelegate));
+        }
+    /*  это копия для наглядности конструктора:
+  private static class SimpleMenuItem implements MenuItem {
         private String name;
         private List<MenuItem> children = new ArrayList<>();
         private ActionDelegate actionDelegate;
@@ -17,8 +25,23 @@ public class SimpleMenu implements Menu {
             this.actionDelegate = actionDelegate;
         }
 */
-        MenuItem menuItem = new SimpleMenuItem(parentName, actionDelegate);
-        return rootElements.add(menuItem);
+        boolean flag = false;
+        for (MenuItem menuItem : rootElements) {
+            if (parentName.equals(menuItem.getName())) {
+                MenuItem children = new SimpleMenuItem(childName, actionDelegate);
+                menuItem.addChildren(children);
+
+                actionDelegate.delegate();
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            MenuItem menuItem = new SimpleMenuItem(parentName, actionDelegate);
+            actionDelegate.delegate();
+            return rootElements.add(menuItem);
+        }
+        return flag;
     }
 
     @Override
@@ -28,9 +51,30 @@ public class SimpleMenu implements Menu {
                 findItem(itemName).get().number));
     }
 
+    /* DFSIterator  отдает ItemInfo, а итератор, который надо реализовать,
+     должен отдавать MenuItemInfo Выполните его на основе DFSIterator.  */
     @Override
     public Iterator<MenuItemInfo> iterator() {
-        return null;
+        class MenuItemInfoIterator implements Iterator<MenuItemInfo> {
+            private Iterator<ItemInfo> dfsIterator;
+
+            MenuItemInfoIterator() {
+                this.dfsIterator = new DFSIterator();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return dfsIterator.hasNext();
+            }
+
+            @Override
+            public MenuItemInfo next() {
+                ItemInfo itemInfo = dfsIterator.next();
+                return new MenuItemInfo(itemInfo.menuItem, itemInfo.number);
+            }
+        }
+
+        return new MenuItemInfoIterator();
     }
 
     private Optional<ItemInfo> findItem(String name) {
@@ -55,6 +99,11 @@ public class SimpleMenu implements Menu {
             this.actionDelegate = actionDelegate;
         }
 
+        public SimpleMenuItem(String name, MenuItem children) {
+            this.name = name;
+            this.children.add(children);
+        }
+
         @Override
         public String getName() {
             return name;
@@ -68,6 +117,27 @@ public class SimpleMenu implements Menu {
         @Override
         public ActionDelegate getActionDelegate() {
             return actionDelegate;
+        }
+
+        @Override
+        public ActionDelegate setActionDelegate(ActionDelegate actionDelegate) {
+            this.actionDelegate = actionDelegate;
+            return this.actionDelegate;
+        }
+
+        @Override
+        public List<MenuItem> addChildren(MenuItem child) {
+            children.add(child);
+            return children;
+        }
+
+        @Override
+        public String toString() {
+            return "SimpleMenuItem{" +
+                    "name='" + name + '\'' +
+                    ", children=" + children +
+                    ", actionDelegate=" + actionDelegate +
+                    '}' + System.lineSeparator();
         }
     }
 
@@ -97,7 +167,7 @@ public class SimpleMenu implements Menu {
             String lastNumber = numbers.removeFirst();
             List<MenuItem> children = current.getChildren();
             int currentNumber = children.size();
-            for (var i = children.listIterator(children.size()); i.hasPrevious();) {
+            for (var i = children.listIterator(children.size()); i.hasPrevious(); ) {
                 stack.addFirst(i.previous());
                 numbers.addFirst(lastNumber.concat(String.valueOf(currentNumber--)).concat("."));
             }
@@ -113,5 +183,18 @@ public class SimpleMenu implements Menu {
             this.menuItem = menuItem;
             this.number = number;
         }
+
+        @Override
+        public String toString() {
+            return number
+                    + "menuItem=" + menuItem;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleMenu{" +
+                "rootElements=" + rootElements +
+                '}';
     }
 }

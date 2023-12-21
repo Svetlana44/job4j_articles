@@ -8,4 +8,8 @@ public interface MenuItem {
     List<MenuItem> getChildren();
 
     ActionDelegate getActionDelegate();
+
+    ActionDelegate setActionDelegate(ActionDelegate actionDelegate);
+
+    List<MenuItem> addChildren(MenuItem child);
 }
