@@ -3,12 +3,11 @@ package ru.job4j.ood.isp.menu;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
-import ru.job4j.ood.tdd.Cinema3D;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-class SimpleMenuPrinterTest extends Cinema3D {
+class SimpleMenuPrinterTest {
 
     MenuPrinter simplPrinter = new SimpleMenuPrinter();
     Menu menu = new SimpleMenu();
