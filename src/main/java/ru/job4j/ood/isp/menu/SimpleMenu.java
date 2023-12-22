@@ -46,6 +46,9 @@ public class SimpleMenu implements Menu {
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
+        if (findItem(itemName).isEmpty()) {
+            return Optional.empty();
+        }
         return Optional.of(new MenuItemInfo(
                 findItem(itemName).get().menuItem,
                 findItem(itemName).get().number));
@@ -132,12 +135,29 @@ public class SimpleMenu implements Menu {
         }
 
         @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            SimpleMenuItem that = (SimpleMenuItem) o;
+            return Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name);
+        }
+
+        @Override
         public String toString() {
-            return "SimpleMenuItem{" +
-                    "name='" + name + '\'' +
-                    ", children=" + children +
-                    ", actionDelegate=" + actionDelegate +
-                    '}' + System.lineSeparator();
+            return "SimpleMenuItem{"
+                    + "name='" + name + '\''
+                    + ", children=" + children
+                    + ", actionDelegate=" + actionDelegate
+                    + '}' + System.lineSeparator();
         }
     }
 
@@ -167,7 +187,7 @@ public class SimpleMenu implements Menu {
             String lastNumber = numbers.removeFirst();
             List<MenuItem> children = current.getChildren();
             int currentNumber = children.size();
-            for (var i = children.listIterator(children.size()); i.hasPrevious(); ) {
+            for (var i = children.listIterator(children.size()); i.hasPrevious();) {
                 stack.addFirst(i.previous());
                 numbers.addFirst(lastNumber.concat(String.valueOf(currentNumber--)).concat("."));
             }
@@ -185,6 +205,23 @@ public class SimpleMenu implements Menu {
         }
 
         @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            ItemInfo itemInfo = (ItemInfo) o;
+            return Objects.equals(number, itemInfo.number);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(number);
+        }
+
+        @Override
         public String toString() {
             return number
                     + "menuItem=" + menuItem;
@@ -192,9 +229,26 @@ public class SimpleMenu implements Menu {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SimpleMenu that = (SimpleMenu) o;
+        return Objects.equals(rootElements, that.rootElements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rootElements);
+    }
+
+    @Override
     public String toString() {
-        return "SimpleMenu{" +
-                "rootElements=" + rootElements +
-                '}';
+        return "SimpleMenu{"
+                + "rootElements=" + rootElements
+                + '}';
     }
 }

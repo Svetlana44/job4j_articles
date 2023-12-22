@@ -57,12 +57,12 @@ public interface Menu extends Iterable<Menu.MenuItemInfo> {
                 return false;
             }
             MenuItemInfo that = (MenuItemInfo) o;
-            return Objects.equals(name, that.name) && Objects.equals(children, that.children) && Objects.equals(number, that.number);
+            return Objects.equals(name, that.name) && Objects.equals(number, that.number);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(name, children, number);
+            return Objects.hash(name, number);
         }
 
         @Override
