@@ -1,6 +1,6 @@
 package ru.job4j.ood.dip.examples.therd;
 
-public class Car implements Transport{
+public class Car implements Transport {
     @Override
     public void sweem() {
 

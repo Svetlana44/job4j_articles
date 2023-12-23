@@ -5,7 +5,7 @@ package ru.job4j.ood.dip.examples.second;
 */
 
 public class Sender {
-    void send(){
+    void send() {
         Sms sms = new Sms();
         Email email = new Email();
     }
