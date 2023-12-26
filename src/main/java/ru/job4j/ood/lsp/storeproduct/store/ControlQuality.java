@@ -4,6 +4,7 @@ import ru.job4j.ood.lsp.storeproduct.food.Food;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 /*  Класс ControlQuality во взаимодействии с хранилищами должен обеспечить распределение продуктов
@@ -49,6 +50,19 @@ public class ControlQuality {
         }
     }
 
+    /* Динамическое перераспределение
+    извлекать все продукты и перераспределять их заново*/
+    public void resort(ControlQuality controlQuality) {
+        List<Store> stores = controlQuality.stores;
+        List<Food> foods = new ArrayList<>();
+        for (Store store : stores) {
+            for (Food food : store.getFoods()) {
+                foods.add(food);
+            }
+            store.trashFoods();
+        }
+        isNotMain(foods, stores);
+    }
 
  /*   public static void main(String[] args) {
 

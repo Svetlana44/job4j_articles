@@ -6,16 +6,13 @@ import org.mockito.Spy;
 import ru.job4j.ood.lsp.storeproduct.food.Apple;
 import ru.job4j.ood.lsp.storeproduct.food.Food;
 import ru.job4j.ood.lsp.storeproduct.store.*;
-import ru.job4j.ood.tdd.Cinema3D;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class ControlQualityTest extends Cinema3D {
+class ControlQualityTest {
 
     LocalDateTime now = LocalDateTime.now().withNano(0);  /* без милисекунд */
     Food apple = new Apple("greenApple", now.plusDays(10), now.minusDays(3), 100.00, 0);
@@ -48,6 +45,38 @@ class ControlQualityTest extends Cinema3D {
 
         Assertions.assertThat(expected).isEqualTo(outputStream.toString());
     }
+
+    @Test
+    public void testSomethingWithMockDate() {
+        ControlQuality controlQuality = new ControlQuality(stores);
+        String expected = "Shop: " + System.lineSeparator()
+                + "Trash: " + System.lineSeparator()
+                + "Warehouse" + System.lineSeparator()
+                + "Shop: " + System.lineSeparator()
+                + "[]" + System.lineSeparator()
+                + System.lineSeparator()
+                + "Trash: " + System.lineSeparator()
+                + "[Food{name='freshMilk', expiryDate=" + now.minusDays(20) + ", createDate=" + now.minusDays(10) + ", price=160.0, discoun=3}, "
+                + "Food{name='notFreshMilk', expiryDate=" + now.minusDays(20) + ", createDate=" + now.minusDays(3) + ", price=200.0, discoun=3}, "
+                + "Food{name='greenApple', expiryDate=" + now.minusDays(20) + ", createDate=" + now.minusDays(3) + ", price=100.0, discoun=0}]" + System.lineSeparator() + System.lineSeparator()
+                + "Warehouse" + System.lineSeparator() + "[]" + System.lineSeparator() + System.lineSeparator();
+
+        controlQuality.isNotMain(foods, stores);
+        for (Store storeTemp : controlQuality.stores) {
+            storeTemp.getFoods().get(0).setExpiryDate(now.minusDays(20));
+
+        }
+
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        controlQuality.resort(controlQuality);
+        Assertions.assertThat(expected).isEqualTo(outputStream.toString());
+
+
+    }
+
 }
 /*
 controlQuality.now.plusDays(10), controlQuality.now.minusDays(3), 10
