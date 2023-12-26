@@ -33,4 +33,10 @@ public class Trash extends AbstractStore {
         System.out.println("Trash: ");
         return this.foods;
     }
+
+    @Override
+    public void trashFoods() {
+        this.foods = new ArrayList<>();
+    }
+
 }

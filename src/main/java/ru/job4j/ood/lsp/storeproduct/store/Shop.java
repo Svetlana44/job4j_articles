@@ -37,4 +37,9 @@ public class Shop extends AbstractStore {
         System.out.println("Shop: ");
         return this.foods;
     }
+
+    @Override
+    public void trashFoods() {
+        this.foods = new ArrayList<>();
+    }
 }

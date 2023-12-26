@@ -31,4 +31,9 @@ public class Warehouse implements Store {
         System.out.println("Warehouse");
         return this.foods;
     }
+
+    @Override
+    public void trashFoods() {
+        this.foods = new ArrayList<>();
+    }
 }
